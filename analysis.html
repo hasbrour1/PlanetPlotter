@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        
+        <title>Planets</title>
+        
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        
+        
+        <link href="css/custom.css" rel="stylesheet">
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+        
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Logo and responsive toggle -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        Introduction
+                    </a>
+                </div>
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+			<li>
+                            <a href="background.html">Background</a>
+                        </li>
+                        <li>
+                            <a href="calculations.html">Calculations</a>
+                        </li>
+			<li  class="active">
+                            <a href="analysis.html">Analysis</a>
+                        </li>
+                        <li>
+                            <a href="conclusion.html">Conclusion</a>
+                        </li>
+                        <li>
+                            <a href="code.html">Code</a>
+                        </li>
+                        <li>
+                            <a href="references.html">References</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        
+        <!-- Content -->
+        <div class="container">
+   <!-- Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Analysis</h1>
+                </div>
+            </div>
+            <!-- /.row -->
+<br>
+<font size="+1">            
+            <p>A more accurate method to obtain planet ephemeris is the JPL DE405 series. Over time, JPL has produced improved models of the position of the planets, with various coordinate systems to accompany it. For example, the DE200 series is in the J2000 system, DE400 series is in the reference frame defined by the International Earth Rotation Service (IERS), and so on<sup>4</sup>. The DE405 series was released in 1998, and was slightly improved from the DE200 series by improving the method of modeling asteroid perturbations. It was also more accurately oriented to the ICRF<sup>7</sup>.</p>
+<p>The DE405 series uses numerical integration processes to, &ldquo;fit to the best available observations of the positions of the Sun, Moon, planets, and five largest asteroids.<sup>4</sup>&rdquo; The integration has a specific time step that is propagated forward or backward in time from a given epoch. Then minor adjustments are made to account for the shape and masses of each planet that are then compared to the observed position values from the last 80 years<sup>4</sup>. This method uses thousands of coefficients for each planet to achieve a more accurate system output.</p>
+<p>Most of JPL&rsquo;s code is available to the public, and the DE405 series used in the analysis came from their website<sup>5</sup>. When writing this site, the most advanced system they have available is the DE432 which dates from December 21<sup>st</sup>, 1549 to January 25<sup>th</sup>, 2650. DE405 dates from December 9<sup>th</sup>, 1599 to February 20<sup>th</sup>, 2201. This falls within the boundaries of the Meeus algorithm, which dates from January of 1900 to January of 2100.&nbsp;</p>
+<p>One difference in the DE405 compared to Meeus is the reference coordinate frame. Meeus is a heliocentric equatorial coordinate frame, where DE405 is a heliocentric ecliptic coordinate frame. This was important when conducting the analysis between the two because a positive rotation in the x-axis needed to occur for the values to align. The Meeus algorithm is a polynomial fit from observed data of the planets, so it is a &ldquo;best-fit&rdquo; of the position of planets. The algorithm doesn&rsquo;t account for the gravitational pulls of the planets on one another, but rather demonstrates their oscillatory behavior individually. DE405, conversely, very thoroughly integrates the gravitational pull of the planets on one another, major astrological bodies, like asteroids and dwarf planetoids, and the sun.</p>
+<p>Although DE405 is adept at achieving precise planetary locations, it is hindered by time. The longer the calculations run, the more error it accumulated over time. This is due to error being calculated at each step and added to the next step, so that eventually the error becomes too large to trust values. In regard to time, Meeus remains consistent with its error, while DE405 will increase.</p>
+<p>The following plots demonstrate the discrepancies between the Meeus function and the DE405 series. When calculating error, the DE405 method was accepted as the &ldquo;true&rdquo; value. DE405 is used as the theoretical value because it is assumed to be higher fidelity and more accurate than the Meeus algorithm. The equation can be seen below:</p>
+<center><img src="pictures/eq9.jpg"/></center>
+<p>Where Meeus values are experimental and DE405 is theoretical.</p>
+<p>The table below is a comparison of the relative planet position on the date December 11<sup>th</sup>, 2016 at 12:00:00.</p>
+<center>
+<table>
+<tbody>
+<tr>
+<td width="160">
+<p>&nbsp;</p>
+</td>
+<td width="160">
+<p>X-Position Error (%)</p>
+</td>
+<td width="160">
+<p>Y-Position Error (%)</p>
+</td>
+<td width="160">
+<p>Z-Position Error (%)</p>
+</td>
+</tr>
+<tr>
+<td width="160">
+<p>Mercury</p>
+</td>
+<td width="160">
+<p>0.000004</p>
+</td>
+<td width="160">
+<p>0.056819</p>
+</td>
+<td width="160">
+<p>0.035003</p>
+</td>
+</tr>
+<tr>
+<td width="160">
+<p>Venus</p>
+</td>
+<td width="160">
+<p>0.003346</p>
+</td>
+<td width="160">
+<p>0.043815</p>
+</td>
+<td width="160">
+<p>0.399604</p>
+</td>
+</tr>
+<tr>
+<td width="160">
+<p>Earth</p>
+</td>
+<td width="160">
+<p>0.002289</p>
+</td>
+<td width="160">
+<p>0.004156</p>
+</td>
+<td width="160">
+<p>0.991716</p>
+</td>
+</tr>
+<tr>
+<td width="160">
+<p>Mars</p>
+</td>
+<td width="160">
+<p>0.010069</p>
+</td>
+<td width="160">
+<p>0.465461</p>
+</td>
+<td width="160">
+<p>0.202019</p>
+</td>
+</tr>
+<tr>
+<td width="160">
+<p>Jupiter</p>
+</td>
+<td width="160">
+<p>0.021391</p>
+</td>
+<td width="160">
+<p>0.283073</p>
+</td>
+<td width="160">
+<p>0.392498</p>
+</td>
+</tr>
+<tr>
+<td width="160">
+<p>Saturn</p>
+</td>
+<td width="160">
+<p>1.231514</p>
+</td>
+<td width="160">
+<p>0.252652</p>
+</td>
+<td width="160">
+<p>2.738796</p>
+</td>
+</tr>
+<tr>
+<td width="160">
+<p>Neptune</p>
+</td>
+<td width="160">
+<p>0.585828</p>
+</td>
+<td width="160">
+<p>4.139647</p>
+</td>
+<td width="160">
+<p>1.528002</p>
+</td>
+</tr>
+<tr>
+<td width="160">
+<p>Uranus</p>
+</td>
+<td width="160">
+<p>0.177449</p>
+</td>
+<td width="160">
+<p>3.138473</p>
+</td>
+<td width="160">
+<p>3.098026</p>
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<p>&nbsp;</p>
+<p>It can be seen that the error for the planets increases for the outer planets. The likely cause of this is due to the gravitational pull of Neptune on Uranus and Jupiter on Saturn, which heavily influences the orbit of Uranus and Saturn. The Meeus equations don&rsquo;t correct for the pull of the planets, and so the error increases as it becomes more influential in the outer planets. The highest error occurs in Earth&rsquo;s z-axis, which, even after adjusting for the coordinate system change, couldn&rsquo;t be reduced. According to JPL&rsquo;s output value, Earth is shifted 2/3 of an AU above the ecliptic planet, giving the Earth an inclination of 41.81<sup>0</sup>. It is uncertain as to why this is occurring, as the Meeus values appear to be a more reasonable estimate.</p>
+<p>Overall, the percent error is small, meaning that the Meeus equations are a reliable method to obtaining initial estimates of the position planets.</p>
+<p>An error plot is provided for each planet.</p>
+            
+<button class="accordion">Mercury Plots</button>
+            <div class="panel">
+                <center><img src="err_analysis/merc_err.jpg"/></center>
+                <br>
+                <center><img src="err_analysis/merc_zoom.jpg"/></center>
+            </div>
+     
+<button class="accordion">Venus Plots</button>
+            <div class="panel">
+                <center><img src="err_analysis/venus_err.jpg"/></center>
+                <br>
+                <center><img src="err_analysis/venus_zoom.jpg"/></center>
+            </div>
+
+<button class="accordion">Earth Plots</button>
+            <div class="panel">
+                <center><img src="err_analysis/earth_err.jpg"/></center>
+                <br>
+                <center><img src="err_analysis/earth_zoom.jpg"/></center>
+            </div>
+
+ <button class="accordion">Mars Plots</button>
+            <div class="panel">
+                <center><img src="err_analysis/mars_err.jpg"/></center>
+                <br>
+                <center><img src="err_analysis/mars_zoom.jpg"/></center>
+            </div>
+
+ <button class="accordion">Jupiter Plots</button>
+            <div class="panel">
+                <center><img src="err_analysis/jup_err.jpg"/></center>
+                <br>
+                <center><img src="err_analysis/jup_zoom.jpg"/></center>
+            </div>
+
+ <button class="accordion">Saturn Plots</button>
+            <div class="panel">
+                <center><img src="err_analysis/saturn_err.jpg"/></center>
+                <br>
+                <center><img src="err_analysis/saturn_zoom.jpg"/></center>
+            </div>
+
+
+  <button class="accordion">Uranus Plots</button>
+            <div class="panel">
+                <center><img src="err_analysis/uranus_err.jpg"/></center>
+                <br>
+                <center><img src="err_analysis/uranus_zoom.jpg"/></center>
+            </div>
+
+  <button class="accordion">Neptune Plots</button>
+            <div class="panel">
+                <center><img src="err_analysis/nep_err.jpg"/></center>
+                <br>
+                <center><img src="err_analysis/nep_zoom.jpg"/></center>
+            </div>
+<p>&nbsp;</p>
+ <p><strong>Error Over Time:</strong></p>
+<p>Another plot was created for the Meeus algorithm and JPL DE405 series over time. This was to demonstrate that the DE405 method degrades over time, as error continuously accumulates. In order to accomplish this, the difference of position between each method was calculated every 3 years in time over the span of 2016-2056. Then a fifth order polynomial line of best fit was implemented to better visualize the trend. The tendency of the magnitude of the position error is oscillatory, but also gradually increases over time. A secular increase in error is expected because of the accumulation of error in DE405 due to numerical integration instability over long periods of time. The fluctuation of error between the two methods has an oscillatory trend because of the periodic motion of the planets. It is difficult to see the overall increase in error over time, so a plot with a linear fit was included as well. There is low confidence in the Earth because the z-position is dramatically different from Meeus to DE405, which would affect the magnitude calculations and the difference. If the upper bound of the propagation of time was increased, then the increase in error would be more dramatic.</p>
+<center><img src="err_analysis/inner_pos.jpg"/></center>   
+<br>
+<center><img src="err_analysis/outer_pos.jpg"/></center> 
+<br>
+<center><img src="err_analysis/inner_linear.jpg"/></center> 
+<br>            
+        </div>
+        <!-- /.container -->
+        
+        <footer>
+            <div class="footer-blurb">
+                <div class="container">
+                    <div class="row">
+                        
+                    </div>
+                    <!-- /.row -->	
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <div class="container">
+                    <p>Copyright &copy; Kayla Hasbrouck 2016</p>
+                </div>
+            </div>
+        </footer>
+            
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].onclick = function(){
+                this.classList.toggle("active");
+                this.nextElementSibling.classList.toggle("show");
+                }
+            }
+            </script>
+        <!-- jQuery -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+        
+    </body>
+    
+</html>

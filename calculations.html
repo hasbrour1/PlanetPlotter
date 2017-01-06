@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        
+        <title>Planets</title>
+        
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        
+        
+        <link href="css/custom.css" rel="stylesheet">
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+        
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Logo and responsive toggle -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        Introduction
+                    </a>
+                </div>
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+			<li>
+                            <a href="background.html">Background</a>
+                        </li>
+                        <li class="active">
+                            <a href="calculations.html">Calculations</a>
+                        </li>
+			<li>
+                            <a href="analysis.html">Analysis</a>
+                        </li>
+                        <li>
+                            <a href="conclusion.html">Conclusion</a>
+                        </li>
+                        <li>
+                            <a href="code.html">Code</a>
+                        </li>
+                        <li>
+                            <a href="references.html">References</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        
+        <!-- Content -->
+        <div class="container">
+      <!-- Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Calculate</h1>
+                </div>
+            </div>
+            <!-- /.row -->
+<br>
+<font size="+1">          
+<p>This is an interactive website, where the user can input various types of dates (between the years 1900 to 2100), and output a table of values for each planet. Pluto is not included in the calculations, as it is extremely far away from the sun, and has a negligible mass compared to the rest of the solar system bodies. The system is in a heliocentric equatorial frame.</p>
+<p>The different input choices are listed below:</p>
+<ol>
+<li>Julian Date &ndash; this is in Universal Time (UT1), where time is independent of station location (Green, 1988:245)<sup>2</sup>. Use of decimals is permitted in this input.</li>
+<li>Day of year &ndash; this is a number (1-366.25) that represents the day of the year, where the decimal portion is converted to hours, minutes, and seconds.</li>
+<li>Date &ndash; this is a standard date (MM/DD/YYYY) and it assumes that the hour is noon, minutes and seconds are zeroed.</li>
+<li>Date-time &ndash; this is a standard input date and time (MM/DD/YYYY/hh/mm/ss) where the user can input any date and time of day.</li>
+</ol>
+<p>Each input is converted to JD<sub>UT1</sub>, if needed, and then run through the Meeus algorithm to compute the results for each planet. The converted Julian Date is provided above the table for convenience.</p>
+<p>There is also a figure provided, which shows the relative position of the planets with respect to each other, not to scale. The orbit is drawn circular, but the eccentricity of each planet at that time is documented in the table. The relative radius of each planet is not to scale either; the planets all have a fixed radius in the figure for easier viewing of the graphic. The angle of the planets, relative to the sun and other planets, is accurately depicted.</p>
+
+            <!-- Projects Row -->
+            <div class="row">
+                <div class="dataEntryDiv" align="center">
+            Select Data Type:
+            <select id="dataType">
+                <option value="JD">Julian Date</option>
+                <option value="doy">Day of year (1-365), year</option>
+                <option value="date">Date (MM/DD/YYYY)</option>
+                <option value="date_time">Date (MM/DD/YYYY/hh/mm/ss)</option>
+            </select>
+            <input type="text" name="data" id="data" value="">
+            <button onclick="processData()">Submit</button>
+        </div>
+        <div class="canvasDiv">
+        <canvas id="a" width="1000" height="1000">
+            Image Not Found!
+        </canvas>
+        </div>
+        <div class="dataEntryDiv" align="center">
+            <p id="enteredData"></p><br>
+            <table align="center" border="1">
+                <tr>
+                    <th>Planet</th>
+                    <th>a (semi-major axis)</th> 
+                    <th>e (eccentricity)</th>
+                    <th>i (inclination)</th>
+                    <th>Omega (Right Ascension of Ascending Node RAAN) </th>
+                    <th>lamda, L_M (mean longitude, in degrees)</th>
+                    <th>w_t (true longitude of periapsis)</th>
+                </tr>
+                
+                <tr>
+                    <td>Mercury</td>
+                    <td id="mercA"></td> 
+                    <td id="mercE"></td>
+                    <td id ="mercI"></td> 
+                    <td id="mercOmega"></td>
+                    <td id="mercLamda"></td> 
+                    <td id="mercWT"></td>
+                </tr>
+                
+                <tr>
+                    <td>Venus</td>
+                    <td id="venA"></td> 
+                    <td id="venE"></td>
+                    <td id ="venI"></td> 
+                    <td id="venOmega"></td>
+                    <td id="venLamda"></td> 
+                    <td id="venWT"></td>
+                </tr>
+                
+                <tr>
+                    <td>Earth</td>
+                    <td id="earthA"></td> 
+                    <td id="earthE"></td>
+                    <td id ="earthI"></td> 
+                    <td id="earthOmega"></td>
+                    <td id="earthLamda"></td> 
+                    <td id="earthWT"></td>
+                </tr>
+                
+                <tr>
+                    <td>Mars</td>
+                    <td id="marsA"></td> 
+                    <td id="marsE"></td>
+                    <td id ="marsI"></td> 
+                    <td id="marsOmega"></td>
+                    <td id="marsLamda"></td> 
+                    <td id="marsWT"></td>
+                </tr>
+                
+                <tr>
+                    <td>Jupiter</td>
+                    <td id="jupA"></td> 
+                    <td id="jupE"></td>
+                    <td id ="jupI"></td> 
+                    <td id="jupOmega"></td>
+                    <td id="jupLamda"></td> 
+                    <td id="jupWT"></td>
+                </tr>
+                
+                <tr>
+                    <td>Saturn</td>
+                    <td id="satA"></td> 
+                    <td id="satE"></td>
+                    <td id ="satI"></td> 
+                    <td id="satOmega"></td>
+                    <td id="satLamda"></td> 
+                    <td id="satWT"></td>
+                </tr>
+                
+                <tr>
+                    <td>Uranus</td>
+                    <td id="uranA"></td> 
+                    <td id="uranE"></td>
+                    <td id ="uranI"></td> 
+                    <td id="uranOmega"></td>
+                    <td id="uranLamda"></td> 
+                    <td id="uranWT"></td>
+                </tr>
+                
+                <tr>
+                    <td>Neptune</td>
+                    <td id="nepA"></td> 
+                    <td id="nepE"></td>
+                    <td id ="nepI"></td> 
+                    <td id="nepOmega"></td>
+                    <td id="nepLamda"></td> 
+                    <td id="nepWT"></td>
+                </tr>
+            </table>
+            <br><br>
+            <table align="center" border="1">
+                <tr>
+                    <th>Planet</th>
+                    <th>r (x,y,z position of planet)</th>
+                    <th>v (x,y,z velocity of planet)</th>
+                </tr>
+                
+                
+                <tr>
+                    <td>Mercury</td>
+                    <td id="mercR"></td> 
+                    <td id="mercV"></td>
+                </tr>
+                
+                <tr>
+                    <td>Venus</td>
+                    <td id="venR"></td> 
+                    <td id="venV"></td>
+                </tr>
+                
+                <tr>
+                    <td>Earth</td>
+                    <td id="earthR"></td> 
+                    <td id="earthV"></td>
+                </tr>
+                
+                <tr>
+                    <td>Mars</td>
+                    <td id="marsR"></td> 
+                    <td id="marsV"></td>
+                </tr>
+                
+                <tr>
+                    <td>Jupiter</td>
+                    <td id="jupR"></td> 
+                    <td id="jupV"></td>
+                </tr>
+                
+                <tr>
+                    <td>Saturn</td>
+                    <td id="satR"></td> 
+                    <td id="satV"></td>
+                </tr>
+                
+                <tr>
+                    <td>Uranus</td>
+                    <td id="uranR"></td> 
+                    <td id="uranV"></td>
+                </tr>
+                
+                <tr>
+                    <td>Neptune</td>
+                    <td id="nepR"></td> 
+                    <td id="nepV"></td>
+                </tr>
+            </table>
+            
+            </div>
+       
+            </div>
+            <!-- /.row -->
+            
+        </div>
+        <!-- /.container -->
+        
+         <footer>
+            <div class="footer-blurb">
+                <div class="container">
+                    <div class="row">
+                      
+                        </div>
+                    </div>
+                    <!-- /.row -->	
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <div class="container">
+                    <p>Copyright &copy; Kayla Hasbrouck 2016</p>
+                </div>
+            </div>
+        </footer>
+        
+		<script type='text/javascript' src='script.js'></script>
+        
+        <!-- jQuery -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+        
+    </body>
+    
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        
+        <title>Planets</title>
+        
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        
+        
+        <link href="css/custom.css" rel="stylesheet">
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+        
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Logo and responsive toggle -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        Introduction
+                    </a>
+                </div>
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+			<li>
+                            <a href="background.html">Background</a>
+                        </li>
+                        <li>
+                            <a href="calculations.html">Calculations</a>
+                        </li>
+			<li>
+                            <a href="analysis.html">Analysis</a>
+                        </li>
+                        <li>
+                            <a href="conclusion.html">Conclusion</a>
+                        </li>
+                        <li  class="active">
+                            <a href="code.html">Code</a>
+                        </li>
+                        <li>
+                            <a href="references.html">References</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        
+        <!-- Content -->
+        <div class="container">
+   <!-- Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Code</h1>
+                </div>
+            </div>
+            <!-- /.row -->
+            
+           <button class="accordion">Main Code</button>
+            <div class="panel">
+                <p>function [r,v,ephem] = project_main(JD,doy,date,date_time)<br />% This script takes a user input date and outputs the planets position and<br />% velocity. Pluto is excluded from the planets. Year bounded between<br />% 1900-2100.</p>
+<p>% Input Variables<br />% JD - Julian Date (UTI) An integer input assumes zeros after decimal<br />% doy - day of year (1-365),year<br />% date - MM/DD/YYYY (assume time is noon)<br />% date_time - MM/DD/YYYY/hh/mm/ss</p>
+<p>% Output Variables<br />% r - position vector of all planets<br />% v - velocity vector of all planets<br />% ephem - ephemeris, planetary position data</p>
+<p>% For an input of JD (xxxxxxx.xx)<br />if ~isempty(JD)<br /> [r_planet,v_planet,ephem] = meeus2(JD)<br />end</p>
+<p>% For an input of days (xxx.xxxx,yyyy)<br />if ~isempty(doy) <br /> yr = ;<br /> num_days = ;<br /> % Check if Leap Year<br /> if rem(yr,4) == 0<br /> tmp = [31 60 91 121 152 182 213 244 274 305 335 366.25];<br /> if yr == 2000<br /> tmp = [31 59 90 120 151 181 212 243 273 304 334 365];<br /> end<br /> else<br /> tmp = [31 59 90 120 151 181 212 243 273 304 334 365.25];<br /> end<br /> %Find month and days:<br /> tmp1 = (floor(num_days)./tmp);<br /> month = find((tmp1== max(tmp1(tmp1&lt;=1)))==1);<br /> if month == 1<br /> day = floor(num_days);<br /> else<br /> day = floor(num_days-tmp(month-1));<br /> end<br /> hours = (num_days-floor(num_days))*24; % GMT<br /> minutes = (hours-floor(hours))*60;<br /> seconds = (minutes-floor(minutes))*60;<br /> <br /> % convert to JD<br /> JD = 367*yr-floor((7*(yr+floor((month+9)/12)))/(4))+...<br /> floor(275*month/9)+day+1721013.5+((seconds/60+minutes)/60+hours)/24;<br /> <br /> % compute terms<br /> [r_planet,v_planet,ephem] = meeus2(JD)<br />end</p>
+<p>% For an input of date (MM/DD/YYYY)<br />if ~isempty(date)<br /> data = ('data.csv');<br /> yr = str2num(data(7:10));<br /> month = str2num(data(1:2));<br /> day = str2num(data(4:5));<br /> hr = 12;<br /> min = 0;<br /> sec = 0;<br /> <br /> % convert to JD<br /> JD = 367*yr-floor((7*(yr+floor((month+9)/12)))/(4))+...<br /> floor(275*month/9)+day+1721013.5+((sec/60+min)/60+hr)/24;</p>
+<p>% compute terms<br /> [r_planet,v_planet,ephem] = meeus2(JD)<br />end</p>
+<p>% For an input of date_time (MM/DD/YYYY/hh/mm/ss)<br />if ~isempty(date_time)<br /> yr = ;<br /> month = ;<br /> day = ;<br /> hr = ;<br /> min = ;<br /> sec = ;<br /> <br /> % convert to JD<br /> JD = 367*yr-floor((7*(yr+floor((month+9)/12)))/(4))+...<br /> floor(275*month/9)+day+1721013.5+((sec/60+min)/60+hr)/24;<br />end <br />end</p>
+            </div>
+<button class="accordion">Meeus Equations</button>
+            <div class="panel">
+           <p>function [r_planet,v_planet,ephem] = meeus2( JD )<br />% This function will take an input Julian Date and output the ephemeris<br />% JD is assumed UTI<br />% calculate T_TDB, equ. 3-42 pg 184<br />T_TDB = (JD-2451545)/(36525);<br />ephem ={'Planet';'Semimajor-axis(a)';'Eccentricity(e)';'Inclination(i)';'Lon. of Ascending Node(Omega)';'Longitude of Perihelion(w_true)';'Mean Longitude(lambda)';'Mean Anomaly(M)';'Argument of Perihelion(w)'}; <br />% Mercury- Appendix D pg 1046<br />AU = 149597870.691; %conversion AU to km<br />a_mer = 0.387098310*AU; %(km)<br />e_mer = 0.20563175+0.000020406*T_TDB-0.0000000284*T_TDB^2-0.00000000017*T_TDB^3; % no unit<br />i_mer = 7.004986-0.0059516*T_TDB+0.00000081*T_TDB^2+0.000000041*T_TDB^3; % (deg)<br />Omega_mer = 48.330893-0.125422*T_TDB-0.00008833*T_TDB^2-0.000000196*T_TDB^3; %(deg)<br />w_true_mer = 77.456119+0.1588643*T_TDB-0.00001343*T_TDB^2+ 0.000000039*T_TDB^3; %(deg)<br />lam_M_mer = 252.250906+149472.6746358*T_TDB-0.00000535*T_TDB^2+0.000000002*T_TDB^3; %(deg)<br />% bound lam_M [0-360]<br />aa = floor(lam_M_mer/360);<br />bb = aa*360;<br />lam_M_mer = lam_M_mer-bb;</p>
+<p>M_mer = lam_M_mer-w_true_mer; %(deg)<br />%bound M [0-360]<br />aa = floor(M_mer/360);<br />bb = aa*360;<br />M_mer = M_mer-bb;</p>
+<p>w_mer = w_true_mer-Omega_mer; %(deg)<br />%bound w [0-360]<br />aa = floor(w_mer/360);<br />bb = aa*360;<br />w_mer = w_mer-bb;</p>
+<p>[nu_mer,~,~,~] = Orbit_Anomaly(a_mer,e_mer,[],[],M_mer,[]);<br />ephem(:,2) = {'Mercury';a_mer;e_mer;i_mer;Omega_mer;w_true_mer;lam_M_mer;M_mer;w_mer};<br />[r_mer,v_mer] = helioCOE2RV(a_mer,i_mer,Omega_mer,w_mer,nu_mer,e_mer);</p>
+<p>% Venus - Appendis D pg 1046<br />a_ven = 0.723329820*AU; %(km)<br />e_ven = 0.00677188-0.000047766*T_TDB+0.0000000975*T_TDB^2-0.00000000044*T_TDB^3; % no unit<br />i_ven = 3.394662-0.0008568*T_TDB-0.00003244*T_TDB^2+0.000000010*T_TDB^3; % (deg)<br />Omega_ven = 76.679920-0.2780080*T_TDB-0.00014256*T_TDB^2-0.000000198*T_TDB^3; %(deg)<br />w_true_ven = 131.563707+0.0048646*T_TDB-0.00138232*T_TDB^2-0.000005332*T_TDB^3; %(deg)<br />lam_M_ven = 181.979801+58517.8156760*T_TDB+0.00000165*T_TDB^2-0.000000002*T_TDB^3; %(deg)</p>
+<p>% bound lam_M [0-360]<br />aa = floor(lam_M_ven/360);<br />bb = aa*360;<br />lam_M_ven = lam_M_ven-bb;</p>
+<p>M_ven = lam_M_ven-w_true_ven; %(deg)<br />%bound M [0-360]<br />aa = floor(M_ven/360);<br />bb = aa*360;<br />M_ven = M_ven-bb;</p>
+<p>w_ven = w_true_ven-Omega_ven; %(deg)<br />%bound w [0-360]<br />aa = floor(w_ven/360);<br />bb = aa*360;<br />w_ven = w_ven-bb;</p>
+<p>[nu_ven,~,~,~] = Orbit_Anomaly(a_ven,e_ven,[],[],M_ven,[]);<br />ephem(:,3) = {'Venus';a_ven;e_ven;i_ven;Omega_ven;w_true_ven;lam_M_ven;M_ven;w_ven};<br />[r_ven,v_ven] = helioCOE2RV(a_ven,i_ven,Omega_ven,w_ven,nu_ven,e_ven);</p>
+<p>% Earth - Appen. D pg 1046<br />a_ear = 1.000001018*AU; %(km)<br />e_ear = 0.01670862-0.000042037*T_TDB-0.0000001236*T_TDB^2+0.00000000004*T_TDB^3; % no unit<br />i_ear = 0.0000000+0.0130546*T_TDB-0.00000931*T_TDB^2-0.000000034*T_TDB^3; % (deg)<br />Omega_ear = 174.873174-0.2410908*T_TDB+0.00004067*T_TDB^2-0.000001327*T_TDB^3; %(deg)<br />w_true_ear = 102.937348+0.3225557*T_TDB+0.00015026*T_TDB^2+ 0.000000478*T_TDB^3; %(deg)<br />lam_M_ear = 100.466449+35999.3728519*T_TDB-0.00000568*T_TDB^2+0.000000000*T_TDB^3; %(deg)</p>
+<p>% bound lam_M [0-360]<br />aa = floor(lam_M_ear/360);<br />bb = aa*360;<br />lam_M_ear = lam_M_ear-bb;</p>
+<p>M_ear = lam_M_ear-w_true_ear; %(deg)<br />%bound M [0-360]<br />aa = floor(M_ear/360);<br />bb = aa*360;<br />M_ear = M_ear-bb;</p>
+<p>w_ear = w_true_ear-Omega_ear; %(deg)<br />%bound w [0-360]<br />aa = floor(w_ear/360);<br />bb = aa*360;<br />w_ear = w_ear-bb;</p>
+<p>[nu_ear,~,~,~] = Orbit_Anomaly(a_ear,e_ear,[],[],M_ear,[]);<br />ephem(:,4) = {'Earth';a_ear;e_ear;i_ear;Omega_ear;w_true_ear;lam_M_ear;M_ear;w_ear};<br />[r_ear,v_ear] = helioCOE2RV(a_ear,i_ear,Omega_ear,w_ear,nu_ear,e_ear);</p>
+<p>% Mars - Appen. D pg 1047<br />a_mar = 1.523679342*AU; %(km)<br />e_mar = 0.09340062+0.000090483*T_TDB-0.0000000806*T_TDB^2-0.00000000035*T_TDB^3; % no unit<br />i_mar = 1.849726-0.0081479*T_TDB-0.00002255*T_TDB^2-0.000000027*T_TDB^3; % (deg)<br />Omega_mar = 49.558093-0.2949846*T_TDB-0.00063993*T_TDB^2-0.000002143*T_TDB^3; %(deg)<br />w_true_mar = 336.060234+0.4438898*T_TDB-0.00017321*T_TDB^2+0.000000300*T_TDB^3; %(deg)<br />lam_M_mar = 355.433275+19140.2993313*T_TDB+0.00000261*T_TDB^2-0.000000003*T_TDB^3; %(deg)</p>
+<p>% bound lam_M [0-360]<br />aa = floor(lam_M_mar/360);<br />bb = aa*360;<br />lam_M_mar = lam_M_mar-bb;</p>
+<p>M_mar = lam_M_mar-w_true_mar; %(deg)<br />%bound M [0-360]<br />aa = floor(M_mar/360);<br />bb = aa*360;<br />M_mar = M_mar-bb;</p>
+<p>w_mar = w_true_mar-Omega_mar; %(deg)<br />%bound w [0-360]<br />aa = floor(w_mar/360);<br />bb = aa*360;<br />w_mar = w_mar-bb;</p>
+<p>[nu_mar,~,~,~] = Orbit_Anomaly(a_mar,e_mar,[],[],M_mar,[]);<br />ephem(:,5) = {'Mars';a_mar;e_mar;i_mar;Omega_mar;w_true_mar;lam_M_mar;M_mar;w_mar};<br />[r_mar,v_mar] = helioCOE2RV(a_mar,i_mar,Omega_mar,w_mar,nu_mar,e_mar);</p>
+<p>% Jupiter - Appen D pg 1047<br />a_jup = (5.202603191+0.0000001913*T_TDB)*AU; %(km)<br />e_jup = 0.04849485+0.000163244*T_TDB-0.0000004719*T_TDB^2-0.00000000197*T_TDB^3; % no unit<br />i_jup = 1.303270-0.0019872*T_TDB+0.00003318*T_TDB^2+0.000000092*T_TDB^3; % (deg)<br />Omega_jup = 100.464441+0.1766828*T_TDB+0.00090387*T_TDB^2-0.000007032*T_TDB^3; %(deg)<br />w_true_jup = 14.331309+0.2155525*T_TDB+0.00072252*T_TDB^2-0.000004590*T_TDB^3; %(deg)<br />lam_M_jup = 34.351484+3034.9056746*T_TDB-0.00008501*T_TDB^2+0.000000004*T_TDB^3; %(deg)</p>
+<p>% bound lam_M [0-360]<br />aa = floor(lam_M_jup/360);<br />bb = aa*360;<br />lam_M_jup = lam_M_jup-bb;</p>
+<p>M_jup = lam_M_jup-w_true_jup; %(deg)<br />%bound M [0-360]<br />aa = floor(M_jup/360);<br />bb = aa*360;<br />M_jup = M_jup-bb;</p>
+<p>w_jup = w_true_jup-Omega_jup; %(deg)<br />%bound w [0-360]<br />aa = floor(w_jup/360);<br />bb = aa*360;<br />w_jup = w_jup-bb;</p>
+<p>[nu_jup,~,~,~] = Orbit_Anomaly(a_jup,e_jup,[],[],M_jup,[]);<br />ephem(:,6) = {'Jupiter';a_jup;e_jup;i_jup;Omega_jup;w_true_jup;lam_M_jup;M_jup;w_jup};<br />[r_jup,v_jup] = helioCOE2RV(a_jup,i_jup,Omega_jup,w_jup,nu_jup,e_jup);</p>
+<p>% Saturn - Appen D. pg 1047<br />a_sat = (9.554909596-.0000021389*T_TDB)*AU; %(km)<br />e_sat = 0.05550862-0.000346818*T_TDB-0.0000006456*T_TDB^2+0.00000000338*T_TDB^3; % no unit<br />i_sat = 2.488878+0.0025515*T_TDB-0.00004903*T_TDB^2+0.000000018*T_TDB^3; % (deg)<br />Omega_sat = 113.665524-0.2566649*T_TDB-0.00018345*T_TDB^2+0.000000357*T_TDB^3; %(deg)<br />w_true_sat = 93.056787+0.5665496*T_TDB+0.00052809*T_TDB^2+0.000004882*T_TDB^3; %(deg)<br />lam_M_sat = 50.077471+1222.1137943*T_TDB+0.00021004*T_TDB^2-0.000000019*T_TDB^3; %(deg)</p>
+<p>% bound lam_M [0-360]<br />aa = floor(lam_M_sat/360);<br />bb = aa*360;<br />lam_M_sat = lam_M_sat-bb;</p>
+<p>M_sat = lam_M_sat-w_true_sat; %(deg)<br />%bound M [0-360]<br />aa = floor(M_sat/360);<br />bb = aa*360;<br />M_sat = M_sat-bb;</p>
+<p>w_sat = w_true_sat-Omega_sat; %(deg)<br />%bound w [0-360]<br />aa = floor(w_sat/360);<br />bb = aa*360;<br />w_sat = w_sat-bb;</p>
+<p>[nu_sat,~,~,~] = Orbit_Anomaly(a_sat,e_sat,[],[],M_sat,[]);<br />ephem(:,7) = {'Saturn';a_sat;e_sat;i_sat;Omega_sat;w_true_sat;lam_M_sat;M_sat;w_sat};<br />[r_sat,v_sat] = helioCOE2RV(a_sat,i_sat,Omega_sat,w_sat,nu_sat,e_sat);</p>
+<p>% Uranus - Appen D. pg 1047-1048<br />a_ura = (19.218446062-0.0000000372*T_TDB+0.000000000098*T_TDB^2)*AU; %(km)<br />e_ura = 0.04629590-0.000027337*T_TDB+0.0000000790*T_TDB^2+0.00000000025*T_TDB^3; % no unit<br />i_ura = 0.773196-0.0016869*T_TDB+0.00000349*T_TDB^2+0.000000016*T_TDB^3; % (deg)<br />Omega_ura = 74.005947+0.0741461*T_TDB+0.00040540*T_TDB^2+0.000000104*T_TDB^3; %(deg)<br />w_true_ura = 173.005159+0.0893206*T_TDB-0.00009470*T_TDB^2+0.000000413*T_TDB^3; %(deg)<br />lam_M_ura = 314.055005+428.4669983*T_TDB-0.00000486*T_TDB^2+0.000000006*T_TDB^3; %(deg)</p>
+<p>% bound lam_M [0-360]<br />aa = floor(lam_M_ura/360);<br />bb = aa*360;<br />lam_M_ura = lam_M_ura-bb;</p>
+<p>M_ura = lam_M_ura-w_true_ura; %(deg)<br />%bound M [0-360]<br />aa = floor(M_ura/360);<br />bb = aa*360;<br />M_ura = M_ura-bb;</p>
+<p>w_ura = w_true_ura-Omega_ura; %(deg)<br />%bound w [0-360]<br />aa = floor(w_ura/360);<br />bb = aa*360;<br />w_ura = w_ura-bb;</p>
+<p>[nu_ura,~,~,~] = Orbit_Anomaly(a_ura,e_ura,[],[],M_ura,[]);<br />ephem(:,8) = {'Uranus';a_ura;e_ura;i_ura;Omega_ura;w_true_ura;lam_M_ura;M_ura;w_ura};<br />[r_ura,v_ura] = helioCOE2RV(a_ura,i_ura,Omega_ura,w_ura,nu_ura,e_ura);</p>
+<p>% Neptune - Appen D pg 1048<br />a_nep = (30.110386869-0.0000001663*T_TDB+0.00000000069*T_TDB^2)*AU; %(km)<br />e_nep = 0.00898809+0.000006408*T_TDB-0.0000000008*T_TDB^2; % no unit<br />i_nep = 1.769952+0.0002257*T_TDB+0.00000023*T_TDB^2-0.000000000*T_TDB^3; % (deg)<br />Omega_nep = 131.784057-0.0061651*T_TDB-0.00000219*T_TDB^2-0.000000078*T_TDB^3; %(deg)<br />w_true_nep = 48.123691+0.0291587*T_TDB+0.00007051*T_TDB^2-0.000000000*T_TDB^3; %(deg)<br />lam_M_nep = 304.348665+218.4862002*T_TDB+0.00000059*T_TDB^2-0.000000002*T_TDB^3; %(deg)</p>
+<p>% bound lam_M [0-360]<br />aa = floor(lam_M_nep/360);<br />bb = aa*360;<br />lam_M_nep = lam_M_nep-bb;</p>
+<p>M_nep = lam_M_nep-w_true_nep; %(deg)<br />%bound M [0-360]<br />aa = floor(M_nep/360);<br />bb = aa*360;<br />M_nep = M_nep-bb;</p>
+<p>w_nep = w_true_nep-Omega_nep; %(deg)<br />%bound w [0-360]<br />aa = floor(w_nep/360);<br />bb = aa*360;<br />w_nep = w_nep-bb;</p>
+<p>[nu_nep,~,~,~] = Orbit_Anomaly(a_nep,e_nep,[],[],M_nep,[]);<br />ephem(:,9) = {'Neptune';a_nep;e_nep;i_nep;Omega_nep;w_true_nep;lam_M_nep;M_nep;w_nep};<br />[r_nep,v_nep] = helioCOE2RV(a_nep,i_nep,Omega_nep,w_nep,nu_nep,e_nep);</p>
+<p>% Final planet parameters matrix<br />r_planet = [r_mer,r_ven,r_ear,r_mar,r_jup,r_sat,r_ura,r_nep];<br />v_planet = [v_mer,v_ven,v_ear,v_mar,v_jup,v_sat,v_ura,v_nep];<br />end</p>     
+
+	</div> 
+        <button class="accordion">COE2RV</button> 
+	<div class="panel">
+<p>function [r_ijk,v_ijk] = helioCOE2RV(a,i,Omega,w,nu,e)<br />% This function takes the inputs a, e, i, Omega, w, and nu and<br />% converts it to position and velocity vectors.</p>
+<p>% Variables:<br />% a - semi-major axis (km)<br />% e - eccentricity (unitless)<br />% r - position vector (km)<br />% v - velocity vector (km/s)<br />% h_bar - angular momentum vector (km^2/s)<br />% n_bar - vector pointing to the node<br />% k_bar - unit vector [0,0,1]<br />% mu - Gravitational parameter of sun (km^3/s^2)<br />% xi - energy (km^2/s^2)</p>
+<p>% Rotation matricies</p>
+<p>% ROT1(x) = [1 0 0 ]<br />% [0 cosX sinX] <br />% [0 -sinX cosX]</p>
+<p>% ROT2(x) = [cosX 0 -sinX]<br />% [0 1 0 ] <br />% [sinX 0 cosX]</p>
+<p>% ROT3(x) = [ cosX sinX 0 ]<br />% [-sinX cosX 0 ] <br />% [ 0 0 1 ]</p>
+<p><br />mu = 1.32712428e11;<br />p = a*(1-e^2);</p>
+<p>% convert to radians <br />nu = deg2rad(nu);<br />i = deg2rad(i);<br />Omega = deg2rad(Omega);<br />w = deg2rad(w);</p>
+<p>% compute rpqw and vpqw<br />rpqw = [p*cos(nu)/(1+e*cos(nu));p*sin(nu)/(1+e*cos(nu));0];<br />vpqw = [-sqrt(mu/p)*sin(nu);sqrt(mu/p)*(e+cos(nu));0];</p>
+<p>% Convert to rijk and vijk<br />ijk_pqw = [cos(Omega)*cos(w)-sin(Omega)*sin(w)*cos(i),...<br /> -cos(Omega)*sin(w)-sin(Omega)*cos(w)*cos(i),...<br /> sin(Omega)*sin(i);...<br /> sin(Omega)*cos(w)+cos(Omega)*sin(w)*cos(i),...<br /> -sin(Omega)*sin(w)+cos(Omega)*cos(w)*cos(i),...<br /> -cos(Omega)*sin(i);...<br /> sin(w)*sin(i),cos(w)*sin(i),cos(i)];<br /> <br />r_ijk = ijk_pqw*rpqw;<br />v_ijk = ijk_pqw*vpqw;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+        </div>
+
+<button class="accordion">RV2COE</button> 
+	<div class="panel">
+<p>function [p,a,i,Omega,w,nu,e,xi,h] = RV2COE(r_bar,v_bar)<br />% This function takes position and velocity vectors and outputs <br />% p, a, e, i, Omega, w, and the true anomaly (and its components<br />% if the true anomaly doesn't exist)</p>
+<p>% Variables:<br />% a - semi-major axis (km)<br />% e - eccentricity (unitless)<br />% r - position vector (km)<br />% v - velocity vector (km/s)<br />% h_bar - angular momentum vector (km^2/s)<br />% n_bar - vector pointing to the node<br />% k_bar - unit vector [0,0,1]<br />% mu - Gravitational parameter of Earth! (km^3/s^2)<br />% xi - energy (km^2/s^2)</p>
+<p>mu = 3.986004415e5;</p>
+<p>h_bar = cross(r_bar,v_bar);<br />h = norm(h_bar);</p>
+<p>k_bar = [0,0,1];<br />n_bar = cross(k_bar,h_bar);</p>
+<p>v = norm(v_bar);<br />r = norm(r_bar);<br />n = norm(n_bar);</p>
+<p>e_bar = (((v^2-(mu/r))*r_bar-(dot(r_bar,v_bar))*v_bar))/mu;</p>
+<p>e = norm(e_bar);</p>
+<p>xi = (v^2/2)-(mu/r);</p>
+<p>if e ~=1<br /> a = -mu/(2*xi);<br /> p = a*(1-e^2);</p>
+<p>else<br /> p = h^2/mu;<br /> a = inf;<br />end</p>
+<p>i = acos(h_bar(3)/h);<br />i = rad2deg(i);</p>
+<p>Omega = acos(n_bar(1)/n);<br />if n_bar(2)&lt;0<br /> Omega = 2*pi-Omega;<br />end<br />Omega = rad2deg(Omega);</p>
+<p>w = acos((dot(n_bar,e_bar))/(n*e));<br />if e_bar(3)&lt;0<br /> w = 2*pi-w; <br />end<br />w = rad2deg(w);</p>
+<p>nu = acos((dot(e_bar,r_bar))/(e*r));<br />if dot(r_bar,v_bar)&lt;0<br /> nu = 2*pi-nu; <br />end<br />nu = rad2deg(nu);</p>
+<p>end</p>
+<p>&nbsp;</p>
+        </div>
+
+	<button class="accordion">Orbit Anomaly</button> 
+	<div class="panel">
+<p>function [nu,E,M,t] = Orbit_Anomaly(a,e,nu,E,M,t)<br />% This function solves for a desired anomaly given one known input of <br />% time, Ecentric anomaly, Mean anomaly, or True anomaly. Assume the <br />% orbit is elliptical. <br />%<br />% Variables:<br />% a - semi-major axis (km)<br />% e - eccentricity (unitless)<br />% nu - True anomaly (deg)<br />% E - Eccentric Anomaly (deg)<br />% M - Mean Anomaly (deg)<br />% t - Time since pariapse(t-tp)(s)<br />% n - mean angular rate of change (rad/s)<br />%<br />% mu - Gravitational parameter of Earth! (km^3/s^2)</p>
+<p>mu = 1.32712428e11;<br />n = sqrt(mu/a^3);</p>
+<p>% Given Nu<br />if ~isempty(nu) <br /> nu = deg2rad(nu);<br /> % calculate E<br /> E = 2*atan2(tan(nu/2),sqrt((1+e)/(1-e)));<br /> <br /> if E&lt;0<br /> E = E+2*pi;<br /> end<br /> %calculate M<br /> M = E-e*sin(E);<br /> if M&lt;0<br /> M = M+2*pi;<br /> end<br /> %calculate t<br /> t = M/n;<br /> <br /> nu = rad2deg(nu);<br /> E = rad2deg(E);<br /> M= rad2deg(M);<br />end</p>
+<p>%Given E<br />if ~isempty(E)<br /> E = deg2rad(E);<br /> if E&lt;0<br /> E = E+2*pi;<br /> end<br /> % calculate nu<br /> nu = 2*atan2(sqrt((1+e)/(1-e))*tan(E/2),1); <br /> if nu&lt;0<br /> nu = nu+2*pi;<br /> end<br /> %calculate M<br /> M = E-e*sin(E);<br /> if M&lt;0<br /> M = M+2*pi;<br /> end<br /> %calculate t<br /> t = M/n;<br /> <br /> nu = rad2deg(nu);<br /> E = rad2deg(E);<br /> M= rad2deg(M);<br />end</p>
+<p>%Given M<br />if ~isempty(M)<br /> M= deg2rad(M);<br /> if M&lt;0<br /> M = M+2*pi;<br /> end<br /> %calculate t<br /> t = M/n;<br /> <br /> %calculate E<br /> E_equ = @(EE) EE-e*sin(EE)-M;<br /> E = fzero(E_equ,M);<br /> if E&lt;0<br /> E = E+2*pi;<br /> end<br /> %calculate nu<br /> nu = 2*atan2(sqrt((1+e)/(1-e))*tan(E/2),1);<br /> if nu&lt;0<br /> nu = nu+2*pi;<br /> end<br /> nu = rad2deg(nu);<br /> E = rad2deg(E);<br /> M= rad2deg(M);<br />end</p>
+<p>%Given t<br />if ~isempty(t)<br /> %calcualte M<br /> M = n*t;<br /> if M&lt;0<br /> M = M+2*pi;<br /> end<br /> %calculate E<br /> E_equ = @(EE) EE-e*sin(EE)-M;<br /> E = fzero(E_equ,M);<br /> if E&lt;0<br /> E = E+2*pi;<br /> end<br /> % x = true;</p>
+<p>%if -pi &lt; M &lt; 0 or M &gt; pi<br /> % E = M-e;<br />% else<br />% E = M + e;<br />% end<br /> <br /> %count = 0;<br /> %while x == true<br /> % En = M;<br /> % En1 = En + (M-En+e*sin(En))/(1-e*cos(En));<br /> % count = count +1;<br /> % if (En1-En) &lt; 0.0001<br /> % x = false;<br /> % end<br /> % if count &gt; 10000<br /> % break;<br /> %end <br /> <br /> %end<br /> % E = En1;<br /> if E&lt;0<br /> E = E+2*pi;<br /> end<br /> <br /> %calculate Nu<br /> nu = 2*atan2(sqrt((1+e)/(1-e))*tan(E/2),1);<br /> if nu&lt;0<br /> nu = nu+2*pi;<br /> end<br /> nu = rad2deg(nu);<br /> E = rad2deg(E);<br /> M= rad2deg(M);<br />end</p>
+<p>end</p>
+<p>&nbsp;</p>
+        </div>
+
+<button class="accordion">Meeus vs DE405</button> 
+	<div class="panel">
+<p>%Name: meeus_comparison<br />%Date: 12/5/16<br />%Purpose: Compare Meeus Ephemerides to JPL DE405 Numerical Integration<br />%Model</p>
+<p>%Initialize Console:<br />clear; close all; clc;</p>
+<p>%JPL Astronomical Constants Required Include File:<br />%Include JPL DE405 directory:<br />addpath('./JPL_DE405');<br />AST_Const</p>
+<p>%Constants:<br />mu_Sun = 1.3271244018e11; %(km^3/s^2)</p>
+<p>%Select Comparison Epoch:<br />count = 0;<br />yr_vec = [2016:3:2056];<br />for yr = yr_vec<br />count = count +1;<br />[ JD ] = get_JD( 12,12,11,yr ); %Julian Date at 12:00 UT, December 11, 2016</p>
+<p>%% Generate Meeus Ephemeris:</p>
+<p>%Planetary Ephemerides at Mercury:<br />ephem = meeus_ephem(JD);<br />%Compute Earth position:<br />[r_Mercury_M,~] = COE2RV(ephem.mercury_a,ephem.mercury_e,rad2deg(ephem.mercury_i),...<br /> rad2deg(ephem.mercury_w),rad2deg(ephem.mercury_Omega),rad2deg(ephem.mercury_nu),...<br /> mu_Sun); %Mercury Position, Helio-Ecliptic [x, y, z] (km)<br />r_Mercury_M = r_Mercury_M*1e3; %Mercury Position, Helio-Ecliptic [x, y, z] (m)<br /> <br /> <br />%Planetary Ephemerides at Venus:<br />%Compute Venus position:<br />[r_Venus_M,~] = COE2RV(ephem.venus_a,ephem.venus_e,rad2deg(ephem.venus_i),...<br /> rad2deg(ephem.venus_w),rad2deg(ephem.venus_Omega),rad2deg(ephem.venus_nu),...<br /> mu_Sun); %Venus Position, Helio-Ecliptic [x y z] (km)<br />r_Venus_M = r_Venus_M*1e3; %Venus Position, Helio-Ecliptic [x y z] (m)</p>
+<p>%Compute Earth position:<br />[r_Earth_M,~] = COE2RV(ephem.earth_a,ephem.earth_e,rad2deg(ephem.earth_i),...<br /> rad2deg(ephem.earth_w),rad2deg(ephem.earth_Omega),rad2deg(ephem.earth_nu),...<br /> mu_Sun); %Earth Position, Helio-Ecliptic [x, y, z] (km)<br />r_Earth_M = r_Earth_M*1e3; %Earth Position, Helio-Ecliptic [x, y, z] (m)</p>
+<p>%Planetary Ephemerides at Mars:<br />%Compute Mars position:<br />[r_Mars_M,~] = COE2RV(ephem.mars_a,ephem.mars_e,rad2deg(ephem.mars_i),...<br /> rad2deg(ephem.mars_w),rad2deg(ephem.mars_Omega),rad2deg(ephem.mars_nu),...<br /> mu_Sun); %Mars Position, Helio-Ecliptic [x y z] (km)<br />r_Mars_M = r_Mars_M*1e3; %Mars Position, Helio-Ecliptic [x y z] (m)</p>
+<p>%Planetary Ephemerides at Jupiter:<br />%Compute Jupiter position:<br />[r_Jupiter_M,~] = COE2RV(ephem.jupiter_a,ephem.jupiter_e,rad2deg(ephem.jupiter_i),...<br /> rad2deg(ephem.jupiter_w),rad2deg(ephem.jupiter_Omega),rad2deg(ephem.jupiter_nu),...<br /> mu_Sun); %Jupiter Position, Helio-Ecliptic [x y z] (km)<br />r_Jupiter_M = r_Jupiter_M*1e3; %Jupiter Position, Helio-Ecliptic [x y z] (m)<br /> <br />%Planetary Ephemerides at Saturn:<br />%Compute Saturn position:<br />[r_Saturn_M,~] = COE2RV(ephem.saturn_a,ephem.saturn_e,rad2deg(ephem.saturn_i),...<br /> rad2deg(ephem.saturn_w),rad2deg(ephem.saturn_Omega),rad2deg(ephem.saturn_nu),...<br /> mu_Sun); %Saturn Position, Helio-Ecliptic [x y z] (km)<br />r_Saturn_M = r_Saturn_M*1e3; %Saturn Position, Helio-Ecliptic [x y z] (m)</p>
+<p>%Planetary Ephemerides at Uranus:<br />%Compute Uranus position:<br />[r_Uranus_M,~] = COE2RV(ephem.uranus_a,ephem.uranus_e,rad2deg(ephem.uranus_i),...<br /> rad2deg(ephem.uranus_w),rad2deg(ephem.uranus_Omega),rad2deg(ephem.uranus_nu),...<br /> mu_Sun); %Uranus Position, Helio-Ecliptic [x y z] (km)<br />r_Uranus_M = r_Uranus_M*1e3; %Uranus Position, Helio-Ecliptic [x y z] (m)</p>
+<p>%Planetary Ephemerides at Neptune:<br />%Compute Neptune position:<br />[r_Neptune_M,~] = COE2RV(ephem.neptune_a,ephem.neptune_e,rad2deg(ephem.neptune_i),...<br /> rad2deg(ephem.neptune_w),rad2deg(ephem.neptune_Omega),rad2deg(ephem.neptune_nu),...<br /> mu_Sun); %Neptune Position, Helio-Ecliptic [x y z] (km)<br />r_Neptune_M = r_Neptune_M*1e3; %Neptune Position, Helio-Ecliptic [x y z] (m) <br /> <br /> %% Generate DE405 Ephemeris:</p>
+<p>%Add DE405 Required Chebychev Polynomial Coefficients:<br />global PC<br />load DE405Coeff.mat<br />PC = DE405Coeff;</p>
+<p>%Generate JPL DE405 Ephemeris:<br />Mjd_UTC = Mjday(yr, 12, 11, 12, 0, 0); %Modified Julian Date<br />[r_Mercury,r_Venus,r_Earth,r_Mars,r_Jupiter,r_Saturn,r_Uranus, ...<br /> r_Neptune,r_Pluto,r_Moon,r_Sun] = JPL_Eph_DE405(Mjd_UTC);<br /> <br />%% Comparison:</p>
+<p>phi = 23.4;<br />R1 = [1 0 0; 0 cosd(phi) sind(phi); 0 -sind(phi) cosd(phi)];<br />R2 = [cosd(phi) 0 -sind(phi); 0 1 0; sind(phi) 0 cosd(phi)];<br />R3 = [cosd(phi) sind(phi) 0; -sind(phi) cosd(phi) 0; 0 0 1];</p>
+<p>%Mercury:<br />err_Mercury(count) = norm(abs((r_Mercury_M-r_Mercury)./r_Mercury)*1e2);<br />%Venus:<br />err_Venus(count) = norm(abs((r_Venus_M-r_Venus)./r_Venus)*1e2);<br />%Earth:<br />err_Earth(count) = norm(abs((r_Earth_M-r_Earth)./r_Earth)*1e2);<br />%Mars:<br />err_Mars(count) = norm(abs((r_Mars_M-r_Mars)./r_Mars)*1e2);<br />%Jupiter:<br />err_Jupiter(count) = norm(abs((r_Jupiter_M-r_Jupiter)./r_Jupiter)*1e2);<br />%Saturn:<br />err_Saturn(count) = norm(abs((r_Saturn_M-r_Saturn)./r_Saturn)*1e2);<br />%Uranus:<br />err_Uranus(count) = norm(abs((r_Uranus_M-r_Uranus)./r_Uranus)*1e2);<br />%Neptune:<br />err_Neptune(count) = norm(abs((r_Neptune_M-r_Neptune)./r_Neptune)*1e2);</p>
+<p>%Mercury:<br />pos_Mercury(count) = norm(abs(r_Mercury_M-r_Mercury))/1e3;<br />%Venus:<br />pos_Venus(count) = norm(abs(r_Venus_M-r_Venus))/1e3;<br />%Earth:<br />pos_Earth(count) = norm(abs(r_Earth_M-r_Earth))/1e3;<br />%Mars:<br />pos_Mars(count) = norm(abs(r_Mars_M-r_Mars))/1e3;<br />%Jupiter:<br />pos_Jupiter(count) = norm(abs(r_Jupiter_M-r_Jupiter))/1e3;<br />%Saturn:<br />pos_Saturn(count) = norm(abs(r_Saturn_M-r_Saturn))/1e3;<br />%Uranus:<br />pos_Uranus(count) = norm(abs(r_Uranus_M-r_Uranus))/1e3;<br />%Neptune:<br />pos_Neptune(count) = norm(abs(r_Neptune_M-r_Neptune))/1e3;</p>
+<p>end<br />%% Plot:</p>
+<p>%Upload Planet Info:<br />global moon mercury venus earth mars jupiter saturn uranus neptune;<br />planetary_database;</p>
+<p>%{<br />%Plot error increase over time:<br />figure()<br />whitebg('k')<br />scatter(yr_vec,err_Mercury,'m')<br />hold on<br />fit = polyfit(yr_vec-2016,err_Mercury,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'m')<br />scatter(yr_vec,err_Venus,'g')<br />fit = polyfit(yr_vec-2016,err_Venus,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'g')<br />scatter(yr_vec,err_Earth,'b')<br />fit = polyfit(yr_vec-2016,err_Earth,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'b')<br />scatter(yr_vec,err_Mars,'r')<br />fit = polyfit(yr_vec-2016,err_Mars,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'r')<br />xlabel('Year')<br />ylabel('Percent Error')<br />title({'Percent Error Magnitude Between Meeus and DE405 Models', 'Inner Planets'})<br />legend('Mercury Sample','Mercury Fit','Venus Sample','Venus Fit','Earth Sample','Earth Fit','Mars Sample','Mars Fit')<br />grid on</p>
+<p>figure()<br />whitebg('k')<br />scatter(yr_vec,err_Jupiter,'y')<br />hold on<br />fit = polyfit(yr_vec-2016,err_Jupiter,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'y')<br />or = [1.0,0.687,0.387];<br />scatter(yr_vec,err_Saturn,[],or)<br />fit = polyfit(yr_vec-2016,err_Saturn,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'Color',or)<br />pu = [0.5,0,0.5];<br />scatter(yr_vec,err_Uranus,[],pu)<br />fit = polyfit(yr_vec-2016,err_Uranus,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'Color',pu)<br />scatter(yr_vec,err_Neptune,'c')<br />fit = polyfit(yr_vec-2016,err_Neptune,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'c')<br />xlabel('Year')<br />ylabel('Percent Error')<br />title({'Percent Error Magnitude Between Meeus and DE405 Models','Outer Planets'})<br />legend('Jupiter Sample','Jupiter Fit','Saturn Sample','Saturn Fit','Uranus Sample','Uranus Fit','Neptune Sample','Neptune Fit')<br />grid on<br />%}</p>
+<p>%Plot position error over time:<br />figure()<br />whitebg('k')<br />scatter(yr_vec,pos_Mercury,'m')<br />hold on<br />fit = polyfit(yr_vec-2016,pos_Mercury,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'m')<br />fit = polyfit(yr_vec-2016,pos_Mercury,1);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'m--')<br />scatter(yr_vec,pos_Venus,'g')<br />fit = polyfit(yr_vec-2016,pos_Venus,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'g')<br />fit = polyfit(yr_vec-2016,pos_Venus,1);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'g--')<br />scatter(yr_vec,pos_Earth,'b')<br />fit = polyfit(yr_vec-2016,pos_Earth,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'b')<br />fit = polyfit(yr_vec-2016,pos_Earth,1);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'b--')<br />scatter(yr_vec,pos_Mars,'r')<br />fit = polyfit(yr_vec-2016,pos_Mars,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'r')<br />fit = polyfit(yr_vec-2016,pos_Mars,1);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'r--')<br />xlabel('Year')<br />ylabel('Position Magnitude Error (km)')<br />title({'Position Error Magnitude Between Meeus and DE405 Models', 'Inner Planets'})<br />legend('Mercury Sample','Mercury Fit','Mars Linear Trend','Venus Sample','Venus Fit','Venus Linear Trend','Earth Sample','Earth Fit','Earth Linear Trend','Mars Sample','Mars Fit','Linear Trend')<br />grid on</p>
+<p>figure()<br />whitebg('k')<br />scatter(yr_vec,pos_Jupiter,'y')<br />hold on<br />fit = polyfit(yr_vec-2016,pos_Jupiter,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'y')<br />or = [1.0,0.687,0.387];<br />scatter(yr_vec,pos_Saturn,[],or)<br />fit = polyfit(yr_vec-2016,pos_Saturn,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'Color',or)<br />pu = [0.5,0,0.5];<br />scatter(yr_vec,pos_Uranus,[],pu)<br />fit = polyfit(yr_vec-2016,pos_Uranus,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'Color',pu)<br />scatter(yr_vec,pos_Neptune,'c')<br />fit = polyfit(yr_vec-2016,pos_Neptune,5);<br />plot(yr_vec,polyval(fit,yr_vec-2016),'c')<br />xlabel('Year')<br />ylabel('Position Error Magnitude (km)')<br />title({'Position Error Magnitude Between Meeus and DE405 Models','Outer Planets'})<br />legend('Jupiter Sample','Jupiter Fit','Saturn Sample','Saturn Fit','Uranus Sample','Uranus Fit','Neptune Sample','Neptune Fit')<br />grid on</p>
+<p>%{<br />%Plot Mercury:<br />whitebg('k')<br />grid on<br />h = plot_sphere(7e6,[0 0 0],1,1,'y' )<br />hold on<br />planet_ellipse(mercury,1,'m','-' )<br />plot_sphere( 3e6,r_Mercury_M/1e3,1,1,'m' )<br />plot_sphere( 3e6,r_Mercury/1e3,1,1,'r' )<br />xlabel('X-axis (km)','Color','k')<br />ylabel('Y-axis (km)','Color','k')<br />zlabel('Z-axis (km)','Color','k')<br />title('Mercury Position Comparison, December 11, 2016','Color','k')<br />legend('Sun','Mercury Orbit','Meeus','JPL DE405')<br />axis equal</p>
+<p>figure<br />%Plot Venus:<br />whitebg('k')<br />grid on<br />h = plot_sphere(7e6,[0 0 0],1,1,'y' )<br />hold on<br />planet_ellipse(venus,1,'g','-' )<br />plot_sphere( 3e6,r_Venus_M/1e3,1,1,'g' )<br />plot_sphere( 3e6,r_Venus/1e3,1,1,'b' )<br />xlabel('X-axis (km)','Color','k')<br />ylabel('Y-axis (km)','Color','k')<br />zlabel('Z-axis (km)','Color','k')<br />title('Venus Position Comparison, December 11, 2016','Color','k')<br />legend('Sun','Venus Orbit','Meeus','JPL DE405')<br />axis equal</p>
+<p>figure<br />%Plot Earth:<br />whitebg('k')<br />grid on<br />h = plot_sphere(7e6,[0 0 0],1,1,'y' )<br />hold on<br />planet_ellipse(earth,1,'b','-' )<br />plot_sphere( 3e6,r_Earth_M/1e3,1,1,'b' )<br />plot_sphere( 3e6,r_Earth/1e3,1,1,'w' )<br />xlabel('X-axis (km)','Color','k')<br />ylabel('Y-axis (km)','Color','k')<br />zlabel('Z-axis (km)','Color','k')<br />title('Earth Position Comparison, December 11, 2016','Color','k')<br />legend('Sun','Earth Orbit','Meeus','JPL DE405')<br />axis equal</p>
+<p>figure<br />%Plot Mars:<br />whitebg('k')<br />grid on<br />h = plot_sphere(14e6,[0 0 0],1,1,'y' )<br />hold on<br />planet_ellipse(mars,1,'r','-' )<br />plot_sphere( 6e6,r_Mars_M/1e3,1,1,'r' )<br />plot_sphere( 6e6,r_Mars/1e3,1,1,'c' )<br />xlabel('X-axis (km)','Color','k')<br />ylabel('Y-axis (km)','Color','k')<br />zlabel('Z-axis (km)','Color','k')<br />title('Mars Position Comparison, December 11, 2016','Color','k')<br />legend('Sun','Mars Orbit','Meeus','JPL DE405')<br />axis equal</p>
+<p><br />figure<br />%Plot Jupiter:<br />whitebg('k')<br />grid on<br />h = plot_sphere(7e7,[0 0 0],1,1,'y' )<br />hold on<br />planet_ellipse(jupiter,1,'r','-' )<br />plot_sphere( 3e7,r_Jupiter_M/1e3,1,1,'r' )<br />plot_sphere( 3e7,r_Jupiter/1e3,1,1,'y' )<br />xlabel('X-axis (km)','Color','k')<br />ylabel('Y-axis (km)','Color','k')<br />zlabel('Z-axis (km)','Color','k')<br />title('Jupiter Position Comparison, December 11, 2016','Color','k')<br />legend('Sun','Jupiter Orbit','Meeus','JPL DE405')<br />axis equal</p>
+<p>figure<br />%Plot Saturn:<br />whitebg('k')<br />grid on<br />h = plot_sphere(9e7,[0 0 0],1,1,'y' )<br />hold on<br />planet_ellipse(saturn,1,'m','-' )<br />plot_sphere( 3e7,r_Saturn_M/1e3,1,1,'m' )<br />plot_sphere( 3e7,r_Saturn/1e3,1,1,'g' )<br />xlabel('X-axis (km)','Color','k')<br />ylabel('Y-axis (km)','Color','k')<br />zlabel('Z-axis (km)','Color','k')<br />title('Saturn Position Comparison, December 11, 2016','Color','k')<br />legend('Sun','Saturn Orbit','Meeus','JPL DE405')<br />axis equal</p>
+<p>figure<br />%Plot Uranus:<br />whitebg('k')<br />grid on<br />h = plot_sphere(18e7,[0 0 0],1,1,'y' )<br />hold on<br />planet_ellipse(uranus,1,'b','-' )<br />plot_sphere( 6e7,r_Uranus_M/1e3,1,1,'b' )<br />plot_sphere( 6e7,r_Uranus/1e3,1,1,'w' )<br />xlabel('X-axis (km)','Color','k')<br />ylabel('Y-axis (km)','Color','k')<br />zlabel('Z-axis (km)','Color','k')<br />title('Uranus Position Comparison, December 11, 2016','Color','k')<br />legend('Sun','Uranus Orbit','Meeus','JPL DE405')<br />axis equal</p>
+<p>figure<br />%Plot Neptune:<br />whitebg('k')<br />grid on<br />h = plot_sphere(54e7,[0 0 0],1,1,'y' )<br />hold on<br />planet_ellipse(neptune,1,'c','-' )<br />plot_sphere( 18e7,r_Neptune_M/1e3,1,1,'c' )<br />plot_sphere( 18e7,r_Neptune/1e3,1,1,'b' )<br />xlabel('X-axis (km)','Color','k')<br />ylabel('Y-axis (km)','Color','k')<br />zlabel('Z-axis (km)','Color','k')<br />title('Neptune Position Comparison, December 11, 2016','Color','k')<br />legend('Sun','Neptune Orbit','Meeus','JPL DE405')<br />axis equal<br />%}</p>
+        </div>
+
+	<button class="accordion">Plot Planet Trajectories</button> 
+	<div class="panel">
+<p>function planet_ellipse( planet,normalizer,col,ls )<br />%palnet_ellipse.m plots the 2-D orbit of a planet in 3-D space <br />%<br />%Inputs: <br />% planet = planetary data structure for current body<br />% normalizer = normalization factor. Use Radius of Earth orbit for AU<br />% col = color specificaiton eg 'r' for red<br />% ls = line specification eg '--' for dashed</p>
+<p><br />%Calculate Ellipse Values:<br />RAAN = planet.RAAN;<br />i = deg2rad(planet.i);<br />LOP = deg2rad(planet.LOP);<br />a = planet.a;<br />e = planet.e;<br />b = a*sqrt(1-e^2);<br />c = a*e;</p>
+<p>%Parametrization:<br />t0 = 0;<br />t = linspace(t0,2*pi+t0,1000);<br />X = a*cos(t);%+c;<br />Y = b*sin(t);<br />Z = zeros(1,length(X)); <br />Rpqw2ijk = [cos(RAAN)*cos(LOP) - sin(RAAN)*sin(LOP)*cos(i),...<br /> -cos(RAAN)*sin(LOP)-sin(RAAN)*cos(LOP)*cos(i),...<br /> sin(RAAN)*sin(i);...<br /> sin(RAAN)*cos(LOP)+cos(RAAN)*sin(LOP)*cos(i),...<br /> -sin(RAAN)*sin(LOP)+cos(RAAN)*cos(LOP)*cos(i),...<br /> -cos(RAAN)*sin(i);...<br /> sin(LOP)*sin(i), cos(LOP)*sin(i),cos(i)];<br />for i = 1:length(t)<br /> Pos(i,:) = Rpqw2ijk*[X(i);Y(i);Z(i)];<br />end</p>
+<p><br />%Ellipse centered at sun:<br />x = Pos(:,1)/normalizer;<br />y = Pos(:,2)/normalizer;<br />z = Pos(:,3)/normalizer;</p>
+<p>%Plot body:<br />plot3(x,y,z,'Color',col,'LineStyle',ls)<br />end</p>
+<p>&nbsp;</p>
+        </div>
+
+<button class="accordion">Planetary Database</button> 
+	<div class="panel">
+<p>function planetary_database<br />%planetary_database.m uploads planetary data for the solar system into<br />%structures for use in MATLAB</p>
+<p>global sun moon mercury venus earth mars jupiter saturn uranus neptune pluto;</p>
+<p>%Definitions:<br /> %a = semi-major axis of orbit relative to Heliocenter [km]<br /> %e = eccentricity of orbit<br /> %i = inclination of orbit [deg]<br /> %RAAN = Right Ascension of Ascending Node of Orbit [deg]<br /> %LOP = Longitude of Perihelion [deg]<br /> %T = orbital period [yr]<br /> %v = orbital velocity [km/s]<br /> %mu = body graviational parameter [km^3/s^2]<br /> %L = mean longitude at J2000 epoch [deg]</p>
+<p>%Lunar:<br />%Note lunar body orbits earth, not sun<br />moon.a = 384400; %km<br />moon.e = 0.05490;<br />moon.i = 5.145396; %deg<br />moon.RAAN = NaN;<br />moon.LOP = NaN;<br />moon.T = 0.0748; %yr<br />moon.v = 1.0232; %km/s<br />moon.r = 1738.0; %km<br />moon.mu = 4902.799; %km^3/s^2</p>
+<p>%Mercury:<br />mercury.a = 57909083; %km<br />mercury.e = 0.205631752; <br />mercury.i = 7.00498625; %deg<br />mercury.RAAN = 48.33089304; %deg<br />mercury.LOP = 77.45611904; %deg<br />mercury.T = 0.24084445; %yr<br />mercury.v = 47.8725; %km/s<br />mercury.r = 2439.0; %km<br />mercury.mu = 2.2032e4; %km^3/s^2<br />mercury.L = 252.25084; %deg</p>
+<p>%Venus:<br />venus.a = 108208601; %km<br />venus.e = 0.006771882;<br />venus.i = 3.39446619; %deg<br />venus.RAAN = 76.67992019; %deg<br />venus.LOP = 131.56370724; %deg<br />venus.T = 0.61518257; %yr<br />venus.v = 35.0214; %km/s<br />venus.r = 6052.0; %km<br />venus.mu = 3.257e5; %km^3/s^2<br />venus.L = 181.97973; %deg</p>
+<p>%Earth:<br />earth.a = 149598023; %km<br />earth.e = 0.016708617; <br />earth.i = 0; %deg<br />earth.RAAN = 0; %deg<br />earth.LOP = 102.93734808; %deg<br />earth.T = 0.99997862; %yr<br />earth.v = 29.7859; %km/s<br />earth.r = 6378.1363; %km<br />earth.mu = 3.986004415e5; %km^3/s^2<br />earth.L = 100.46435; %deg</p>
+<p>%Mars:<br />mars.a = 227939186*8/9;<br />mars.e = 0.093400620;<br />mars.i = 1.84972648;<br />mars.RAAN = 49.55809321;<br />mars.LOP = 336.06023398;<br />mars.T = 1.8871105; <br />mars.v = 24.1309;<br />mars.r = 3397.2;<br />mars.mu = 4.305e4;<br />mars.L = 355.45332;</p>
+<p>%Jupiter:<br />jupiter.a = 778298361;<br />jupiter.e = 0.048494851;<br />jupiter.i = 1.30326966;<br />jupiter.RAAN = 100.46444064;<br />jupiter.LOP = 14.33130924;<br />jupiter.T = 11.856525;<br />jupiter.v = 13.0697;<br />jupiter.r = 71492.0;<br />jupiter.mu = 1.268e8;<br />jupiter.L = 34.40438;</p>
+<p>%Saturn:<br />saturn.a = 1429394133; %km<br />saturn.e = 0.055508622;<br />saturn.i = 2.48887810; %deg<br />saturn.RAAN = 113.66552370; %deg<br />saturn.LOP = 93.05678728; %deg<br />saturn.T = 29.423519; %yr<br />saturn.r = 60268; %km<br />saturn.mu = 3.794e7; %km^3/s^2<br />saturn.L = 49.94432;</p>
+<p>%Uranus:<br />uranus.a = 2875038615; %km<br />uranus.e = 0.046295898; <br />uranus.i = 0.77319617; %deg<br />uranus.RAAN = 74.00594723; %deg<br />uranus.LOP = 173.00515922; %deg<br />uranus.T = 83.747406; %yr<br />uranus.r = 25559; %km<br />uranus.mu = 5.794e7; %km^3/s^2<br />uranus.L = 313.23218; %deg</p>
+<p>%Neptune:<br />neptune.a = 4504449769;<br />neptune.e = 0.008988095; <br />neptune.i = 1.76995221; <br />neptune.RAAN = 131.78405702;<br />neptune.LOP = 48.12369050;<br />neptune.T = 163.7232045;<br />neptune.r = 24764;<br />neptune.mu = 6.809e6;<br />neptune.L = 304.88003; %deg</p>
+<p>%Pluto:<br />pluto.a = 5915799000;<br />pluto.e = 0.249050;<br />pluto.i = 17.14216667;<br />pluto.RAAN = 110.29713889;<br />pluto.LOP = 224.13486111;<br />pluto.T = 248.0208;<br />pluto.r = 1151;<br />pluto.mu = 900;<br />pluto.L = 238.92881;</p>
+<p>end</p>
+<p>&nbsp;</p>
+        </div>
+
+<button class="accordion">Plot Planet</button> 
+	<div class="panel">
+<p>function plot_handle = plot_sphere( r,position,normalizer,planet_scale,col )<br />%plot_sphere.m plots a sphere.<br />%<br />%Inputs: <br />% r = sphere radius [km]<br />% position = Helicentric Inertial position vector [x,y,z] [km]<br />% normalizer = position normalization factor. Use Radius of Earth orbit for AU<br />% planet_scale = scale factor for sphere size<br />% col = color specification eg 'y' for solid yellow sphere</p>
+<p>%Calculate spherical surface:<br />[x,y,z] = sphere(81);<br />x = x*r/planet_scale;<br />y = y*r/planet_scale;<br />z = z*r/planet_scale;</p>
+<p>X=position(1);<br />Y=position(2);<br />Z = position(3);<br />%Plot body:<br />plot_handle = surf(x+X/normalizer,y+Y/normalizer,z+Z/normalizer,...<br /> 'XDataSource','X',...<br /> 'YDataSource','Y',...<br /> 'ZDataSource','Z')<br />set(plot_handle,'FaceColor',col)<br />set(plot_handle,'linestyle','none')</p>
+<p>end</p>
+<p>&nbsp;</p>
+        </div>
+
+        </div>
+        <!-- /.container -->
+        
+        <footer>
+            <div class="footer-blurb">
+                <div class="container">
+                    <div class="row">
+                       
+                    </div>
+                    <!-- /.row -->	
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <div class="container">
+                    <p>Copyright &copy; Kayla Hasbrouck 2016</p>
+                </div>
+            </div>
+        </footer>
+        
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].onclick = function(){
+                this.classList.toggle("active");
+                this.nextElementSibling.classList.toggle("show");
+                }
+            }
+            </script>
+        
+        <!-- jQuery -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+        
+    </body>
+    
+</html>

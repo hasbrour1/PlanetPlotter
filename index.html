@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        
+        <title>Planets</title>
+        
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        
+        
+        <link href="css/custom.css" rel="stylesheet">
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+        
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Logo and responsive toggle -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        Introduction
+                    </a>
+                </div>
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+			<li>
+                            <a href="background.html">Background</a>
+                        </li>
+                        <li>
+                            <a href="calculations.html">Calculations</a>
+                        </li>
+			<li>
+                            <a href="analysis.html">Analysis</a>
+                        </li>
+                        <li>
+                            <a href="conclusion.html">Conclusion</a>
+                        </li>
+                        <li>
+                            <a href="code.html">Code</a>
+                        </li>
+                        <li>
+                            <a href="references.html">References</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        
+        <!-- Content -->
+        <div class="container">
+    <!-- Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Planetary Ephemeris<br><small>Kayla Hasbrouck</small> </h1>         
+                </div>
+            </div>
+            <!-- /.row -->
+       <br>  
+ <font size="+1">
+<p>   
+Time systems and converting between dates in the aerospace world is critical. These dates can be used for planning missions, trajectories, and calculating important planetary elements. The Julian date is a measurement of time that is widely used in many astronomical calculations. Julian dates are continuous counts of days and fractions since noon universal time on January 1<sup>st</sup>, 4713 BCE<sup>6</sup>. Most calendars are different between nations, so it is important to have a universal time scale that the world agrees upon, with which one can calculate astronomical parameters needed for planning missions. 
+</p>
+<p>
+Planning trajectories to planets requires preliminary estimates to determine the mass, volume, budget, and time constraints of a spacecraft. A great basic starting point to determine the position and velocity of the planets, on a given day, is by using ephemeris estimates. Ephemerides are tabular values of position and velocity of astronomical objects, such as satellites, asteroids, and planets, at given points in time and in a specified coordinate frame<sup>2</sup>. There are many methods to calculate these values. An algorithm given by Jean Meeus is the primary method used here. The derivation of his algorithms can be found in <q>Astronomical Algorithms,</q> by Jean Meeus, published in 1999<sup>3</sup>. Meeus isn&#8217;t the most accurate method available to find the planet parameters, but it is an easy approach for initial estimates. The initial estimates are a great start to planning mission trajectories, which can account for locations of planets with respect to one another. Relative positions of planets may influence launch windows, required fuel for launch and maneuvers, or available destinations.
+</p>
+<p>
+Given that the Meeus method is not the most accurate method, the generated values are compared to the JPL DE405 ephemerides results, and an error analysis is provided.  The JPL DE405 series uses numerical integration to propagate the planets forward in time to achieve a position and velocity output. This method is commonly used as one of the more accurate and available ways to compute planetary ephemeris. 
+</p>
+            
+        </div>
+        <!-- /.container -->
+        
+        <footer>
+            <div class="footer-blurb">
+                <div class="container">
+                    <div class="row">
+                       
+                    </div>
+                    <!-- /.row -->	
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <div class="container">
+                    <p>Copyright &copy; Kayla Hasbrouck 2016</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- jQuery -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+        
+    </body>
+    
+</html>

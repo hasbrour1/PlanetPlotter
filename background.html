@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        
+        <title>Planets</title>
+        
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        
+        
+        <link href="css/custom.css" rel="stylesheet">
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+        
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Logo and responsive toggle -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        Introduction
+                    </a>
+                </div>
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+			<li class="active">
+                            <a href="background.html">Background</a>
+                        </li>
+                        <li>
+                            <a href="calculations.html">Calculations</a>
+                        </li>
+			<li>
+                            <a href="analysis.html">Analysis</a>
+                        </li>
+                        <li>
+                            <a href="conclusion.html">Conclusion</a>
+                        </li>
+                        <li>
+                            <a href="code.html">Code</a>
+                        </li>
+                        <li>
+                            <a href="references.html">References</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        
+        <!-- Content -->
+        <div class="container">
+   <!-- Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Background</h1>
+                </div>
+            </div>
+            <!-- /.row -->
+<br>            
+<font size="+1">
+            <p><strong>Meeus Algorithm:</strong></p>
+<p>The basic Meeus algorithm is expressed as a third order polynomial in the form<sup>1</sup>:</p>
+<center><img src="pictures/eq1.jpg"/></center>
+<p>Where T<sub>TDB</sub> is the barycentric dynamical time, which is measured in Julian centuries of 36525 ephemeris days from the epoch J2000 = 2,451,545.0 = January 1, 2000 12:00:00.000 TT<sup>2</sup>.&nbsp; In order to compute T&shy;<sub>TDB</sub> the following equation was used<sup>2</sup>:</p>
+<center><img src="pictures/eq2.jpg"/></center>
+<p>The subscripts represent the different types of time, which, for the purpose of this website, is only in barycentric dynamical time, and JD is the Julian Date.</p>
+<p>The output of the Meeus equations gives the orbital elements of each planet<sup>2</sup>:</p>
+<center><img src="pictures/eq3.png"/></center>
+<p>In order to calculate the position and velocity of the planets, the mean anomaly is needed. It can be found using the equation<sup>2</sup>:</p>
+<center><img src="pictures/eq4.png"/></center>
+<p>The longitude of perihelion is related to the longitude of the ascending node and the argument of perihelion in the following equation<sup>2</sup>:</p>
+<center><img src="pictures/eq5.png"/></center>
+<p>The orbital elements given above fully classify the size, shape, and orientation of an orbit in 3-dimensional space. Utilizing the mean anomaly yields the position of a body within said orbit; hence, the Meeus algorithms allow for the position of each planet to be estimated relative to the center of the solar system.</p>
+<p><strong>Position and velocity equations:</strong></p>
+<p>From these elements, the true anomaly can be calculated by root solving for the eccentric anomaly and then converting to true anomaly:</p>
+<center><img src="pictures/eq6.png"/></center>
+<p>&nbsp;Then, the position and velocity of the planets can be calculated by converting from classical orbital elements to Cartesian coordinates.</p>
+<p>The output of position and velocity are in a heliocentric equatorial coordinate frame. Reference frame is important because values of position, angles and direction can all be altered if a different frame is used. Two bodies need to have a central reference point and matching axis to accurately compare values. This is important, later, when calculating the error between the Meeus method provided and JPL&rsquo;s DE405 estimates.</p>
+<p><strong>Converting times</strong></p>
+<p>The Julian date used in the equations is in Universal time (UT1). UT1 is defined by the Earth&rsquo;s rotation, and it is slightly irregular: it is derived from the meridian circle and corrected for polar wandering<sup>8</sup>. The mean solar time is at 0<sup>0</sup> longitude, and time is proportional to the rotational angle of the Earth with respect to the International Celestial Reference Frame (ICRF)<sup>9</sup>. &nbsp;The different time conversions that are available are day of year, date, and date with time, converted to universal time-Julian date. To convert from day of year to Julian date the following method was used:</p>
+<ul>
+<li>Input: days, year</li>
+<li>Check for a leap year or the year 2000 and assign number of days in a month depending on the year type</li>
+<li>Compute month from the days in that specific year</li>
+<li>Compute the number of days after the month is found</li>
+<li>Calculate hours, minutes and seconds from the remaining fractional portion of the input days:</li>
+</ul>
+<center><img src="pictures/eq7.png"/></center>
+<p>&nbsp;</p>
+<p>After obtaining the year, month, day, hours, minutes, and seconds, the Julian date can be found using the following equation:</p>
+<center><img src="pictures/eq8.png"/></center>
+<p>Where yr is the year, mo is the month, s is the seconds, d is the days, min is minutes, and h is the hours.</p>
+<p>If the input is a standard date, without time, then the process is simplified:</p>
+<ul>
+<li>Input: MM/DD/YYYY</li>
+<li>The time is assumed to be noon, so the next step is to input the values into the JD<sub>UT1</sub></li>
+</ul>
+<p>If the input is a date and time, then the process is:</p>
+<ul>
+<li>Input: MM/DD/YYYY/hh/mm/ss</li>
+<li>Then the next step is to input the values into the JD<sub>UT1</sub></li>
+</ul>
+<p>All of the coded processes can be found in the Code tab of the website.</p>
+            
+        </div>
+        <!-- /.container -->
+        
+        <footer>
+            <div class="footer-blurb">
+                <div class="container">
+                   
+                    </div>
+                    <!-- /.row -->	
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <div class="container">
+                    <p>Copyright &copy; Kayla Hasbrouck 2016</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- jQuery -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+        
+    </body>
+    
+</html>
